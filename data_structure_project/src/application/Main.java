@@ -1,6 +1,4 @@
 package application;
-	
-import java.nio.file.FileSystems;
 
 import application.helpers.XMLParser;
 import javafx.application.Application;
