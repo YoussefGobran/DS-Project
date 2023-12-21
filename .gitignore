@@ -1,4 +1,5 @@
 *.class
 .vscode
 .settings
+.settings/*
 .vscode/*
