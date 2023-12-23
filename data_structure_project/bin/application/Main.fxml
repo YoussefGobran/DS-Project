@@ -8,6 +8,7 @@
    <children>
       <Button fx:id="choose" layoutX="490.0" layoutY="142.0" mnemonicParsing="false" onAction="#multiFileChoosser" prefHeight="79.0" prefWidth="94.0" text="pick xml file" />
       <TextArea fx:id="direction" layoutX="29.0" layoutY="144.0" prefHeight="79.0" prefWidth="441.0" />
-      <Button layoutX="490.0" layoutY="344.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="94.0" text="procced" />
+      <Button layoutX="490.0" layoutY="338.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="94.0" text="proceed" />
+      <Button layoutX="53.0" layoutY="338.0" mnemonicParsing="false" onAction="#handleProceedButtonClick" prefHeight="30.0" prefWidth="94.0" text="txt" />
    </children>
 </AnchorPane>

@@ -13,7 +13,15 @@ public class XMLNode {
     innerText = "";
     childrenNodes = new ArrayList<>();
   }
-
+  public String getInnerText() {
+    return innerText;
+  }
+  public String getTagName() {
+    return tagName;
+  }
+  public List<XMLNode> getChildrenNodes() {
+    return childrenNodes;
+  }
   @Override
   public String toString() {
     String res = "";

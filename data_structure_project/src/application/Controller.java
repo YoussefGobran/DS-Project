@@ -1,25 +1,94 @@
 package application;
-
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 
+import application.helpers.XMLNode;
+import application.helpers.XMLParser;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 public class Controller {
 	@FXML
 	private TextArea direction;
 	@FXML
 	private Button choose;
-	
+	public XMLParser parser;
 	final FileChooser fc = new FileChooser();
 	public void multiFileChoosser(ActionEvent e){
 		fc.setTitle("My File Chooser");
 		fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files","*.xml"));
 		File file = fc.showOpenDialog(null);
 		if(file==null)return;
-		direction.appendText(file.getAbsolutePath()+ "\n");
+		try {
+			String fileContent = new String(Files.readAllBytes(file.toPath()));
+			direction.setText(fileContent);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
 	}
+	// Formatting XML
+
+	@FXML
+	private void handleProceedButtonClick(ActionEvent event) {
+		String xmlContent = direction.getText();
+		parser = new XMLParser();
+		parser.parseXMLFile(xmlContent);
+
+		String formattedXml = formatXml(parser.rootNode);
+		openFormattedXmlWindow(formattedXml);
+	}
+
+	private String formatXml(XMLNode node) {
+		StringBuilder formattedXml = new StringBuilder();
+		formatNode(node, formattedXml, 0);
+		return formattedXml.toString();
+	}
+
+	private void formatNode(XMLNode node, StringBuilder formattedXml, int indentationLevel) {
+		formattedXml.append(getInd(indentationLevel)).append("<").append(node.getTagName()).append(">");
+
+		if (node.getChildrenNodes() != null && !node.getChildrenNodes().isEmpty()) {
+			formattedXml.append("\n");
+			for (XMLNode child : node.getChildrenNodes()) {
+				formatNode(child, formattedXml, indentationLevel + 1);
+			}
+			formattedXml.append(getInd(indentationLevel));
+		} else if (node.getInnerText() != null && !node.getInnerText().trim().isEmpty()) {
+			String trimmedInnerText = node.getInnerText().trim();
+			if (trimmedInnerText.length() > 40) { // For name or ID
+				formattedXml.append("\n").append(getInd(indentationLevel + 1)).append(trimmedInnerText).append("\n").append(getInd(indentationLevel));
+			} else {
+				formattedXml.append(trimmedInnerText);
+			}
+		}
+
+		formattedXml.append("</").append(node.getTagName()).append(">\n");
+	}
+
+
+	private String getInd(int indentationLevel) {
+		StringBuilder ind = new StringBuilder();
+		for (int i = 0; i < indentationLevel; i++) {
+			ind.append("    "); // Use 4 spaces for each level of indentation
+		}
+		return ind.toString();
+	}
+
+
+	private void openFormattedXmlWindow(String formattedXml) {
+		Stage stage = new Stage();
+		TextArea formattedXmlTextArea = new TextArea();
+		formattedXmlTextArea.setText(formattedXml);
+		Scene scene = new Scene(formattedXmlTextArea, 400, 300);
+		stage.setScene(scene);
+		stage.setTitle("Formatted XML");
+		stage.show();
+	}
+
 }
