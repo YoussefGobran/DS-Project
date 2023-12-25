@@ -106,4 +106,80 @@ public class XMLParser {
     }
   }
 
+  /**************************************************************************
+   *                       Xml Correction/Detection                         *
+   **************************************************************************/
+  public static List<Object> xmlCorrection(String xml) {
+    //next line to remove any spaces at the beginning of the line in the xml
+    xml = xml.replaceAll("(?m)^\\s+", "");
+    StringBuffer xmlBuffer = new StringBuffer(xml);
+    Stack<String> stack = new Stack<String>(); //stack to hold openning tags
+    String Tag = "";
+    StringBuffer Tagbuffer = new StringBuffer();
+    char[] chars = xml.toCharArray();
+    int xmlcount = 0;
+    int xmlbuffercount = 0;
+    boolean endOfFile = false;
+    List<Integer> errorIndex = new ArrayList<>();
+
+    while (xmlcount != chars.length) {
+        if (chars[xmlcount] == '<') { //start by going through every tag in xml , tags start with '<' and ends with '>'
+            Tag = "" + chars[xmlcount];
+        } else if (chars[xmlcount] == '>') {
+            Tag += chars[xmlcount];
+            if (Tag.contains("/")) { //check if the tag is a closing tag
+                if (isMatchingTag(stack.peek(), Tag)) { //if it matches the tag on top of the stack pop the last tag in stack
+                    stack.pop();
+                } else { //if it doesn't match then form a closing tag for the openning tag in the stack and insert it 
+                    Tagbuffer = new StringBuffer(stack.peek());
+                    Tagbuffer = Tagbuffer.insert(1, '/');
+                    xmlBuffer = xmlBuffer.insert(xmlBuffer.indexOf(Tag, xmlbuffercount - Tag.length()), Tagbuffer.toString() + "\n");
+                    errorIndex.add(xml.indexOf(Tag, xmlcount - Tag.length())); //index of the error to be used later
+                    stack.pop();
+                    xmlbuffercount = xmlbuffercount + Tagbuffer.length() - Tag.length();
+                    xmlcount = xmlcount - Tag.length();
+                }
+            } else {
+                if (!stack.empty()) {
+                    //handling different cases of openning tags
+
+
+                } else { //if it is an openning tag push it in stack
+                    stack.push(Tag);
+                    Tag = "";
+                }
+            }
+        } else if (!Tag.isEmpty()) { //forming tags by taking characters between < >
+            Tag += chars[xmlcount];
+        }
+        xmlcount++;
+        xmlbuffercount++;
+    }
+    
+    //lastly check if the stack is not empty and close all the openning tags remaining
+    if (!stack.empty()) {
+        while (!stack.empty()) {
+
+            Tagbuffer = new StringBuffer(stack.peek());
+            Tagbuffer = Tagbuffer.insert(1, '/');
+            xmlBuffer = xmlBuffer.insert(xmlBuffer.length(), Tagbuffer.toString() + "\n");
+            stack.pop();
+        }
+    }
+    //creating a list of objects to return the xml containing error, the index of each error in that xml and last object is the corrected xml
+            List<Object> result =new ArrayList<>();
+            result.add(xml);
+            result.add(errorIndex);
+            result.add(xmlBuffer.toString());
+    return result;
+}
+
+//finction checks if this closing tag matches the current openning tag
+public static boolean isMatchingTag(String openTag, String closingTag) {
+    StringBuffer opentagbuffer = new StringBuffer(openTag);
+    opentagbuffer = opentagbuffer.insert(1, '/');
+    return opentagbuffer.toString().equals(closingTag);
+}
+
+
 }
