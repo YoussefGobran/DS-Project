@@ -142,6 +142,104 @@ public class XMLParser {
             } else {
                 if (!stack.empty()) {
                     //handling different cases of openning tags
+					if (!(Tag.equals(stack.peek()))) { //if the stack not empty and current openning tag equals the tag on top of the stack we close it directly
+                                stack.push(Tag); //if it is not equal we then push it in the stack
+
+                                xmlcount++;
+                                xmlbuffercount++;
+
+                                endOfFile = (xmlcount + 1) >= chars.length - 1;
+                                if (!endOfFile && chars[xmlcount] != '\n') { //if open tag and attribute and closing tag in one line
+
+                                    while (!endOfFile && chars[xmlcount] != '<') {
+                                        xmlcount++;
+                                        xmlbuffercount++;
+                                    }
+                                    if (!endOfFile) {
+                                        Tag = "" + chars[xmlcount];
+                                    }
+
+                                    while (!endOfFile && chars[xmlcount] != '>') {
+                                        xmlcount++;
+                                        xmlbuffercount++;
+                                        Tag += chars[xmlcount];
+                                    }
+                                    if (!endOfFile) {
+                                        if (Tag.contains("/")) {
+                                            if (isMatchingTag(stack.peek(), Tag)) {
+                                                stack.pop();
+                                            } else {
+                                                Tagbuffer = new StringBuffer(stack.peek());
+                                                Tagbuffer = Tagbuffer.insert(1, '/');
+                                                xmlBuffer = xmlBuffer.insert(xmlBuffer.indexOf(Tag, xmlbuffercount - Tag.length()) - 1, Tagbuffer.toString());
+                                                errorIndex.add(xml.indexOf(Tag, xmlcount - Tag.length()));
+                                                stack.pop();
+                                                xmlbuffercount = xmlbuffercount + Tagbuffer.length() - Tag.length();
+                                                xmlcount = xmlcount - Tag.length();
+                                            }
+
+                                        } else {
+                                            Tagbuffer = new StringBuffer(stack.peek());
+                                            Tagbuffer = Tagbuffer.insert(1, '/');
+                                            xmlBuffer = xmlBuffer.insert(xmlBuffer.indexOf(Tag, xmlbuffercount - Tag.length()), Tagbuffer.toString());
+                                            errorIndex.add(xml.indexOf(Tag, xmlcount - Tag.length()));
+                                            stack.pop();
+                                            xmlbuffercount = xmlbuffercount + Tagbuffer.length() - Tag.length();
+                                            xmlcount = xmlcount - Tag.length();
+                                        }
+                                    }
+                                    endOfFile = (xmlcount + 1) >= chars.length - 1;
+                                } else if (!endOfFile && chars[xmlcount + 1] != '<') { //if open tag and attribute and closing tag in seperate lines
+                                    while (!endOfFile && chars[xmlcount] != '<') {
+                                        xmlcount++;
+                                        xmlbuffercount++;
+                                        endOfFile = xmlcount >= chars.length - 1;
+                                    }
+                                    if (!endOfFile) {
+                                        Tag = "" + chars[xmlcount];
+                                    }
+                                    while ((!endOfFile) && (chars[xmlcount] != '>')) {
+                                        xmlcount++;
+                                        xmlbuffercount++;
+                                        Tag += chars[xmlcount];
+                                    }
+                                    if (!endOfFile) {
+                                        if (Tag.contains("/")) {
+                                            if (isMatchingTag(stack.peek(), Tag)) {
+                                                stack.pop();
+                                            } else {
+                                                Tagbuffer = new StringBuffer(stack.peek());
+                                                Tagbuffer = Tagbuffer.insert(1, '/');
+                                                xmlBuffer = xmlBuffer.insert(xmlBuffer.indexOf(Tag, xmlbuffercount - Tag.length()), Tagbuffer.toString() + "\n");
+                                                stack.pop();
+                                                xmlbuffercount = xmlbuffercount + Tagbuffer.length() - Tag.length();
+                                                xmlcount = xmlcount - Tag.length();
+                                                errorIndex.add(xml.indexOf(Tag, xmlcount - Tag.length()));
+
+                                            }
+
+                                        } else {
+                                            Tagbuffer = new StringBuffer(stack.peek());
+                                            Tagbuffer = Tagbuffer.insert(1, '/');
+                                            xmlBuffer = xmlBuffer.insert(xmlBuffer.indexOf(Tag, xmlbuffercount - Tag.length()), Tagbuffer.toString() + "\n");
+                                            errorIndex.add(xml.indexOf(Tag, xmlcount - Tag.length()));
+                                            stack.pop();
+                                            xmlbuffercount = xmlbuffercount + Tagbuffer.length() - Tag.length();
+                                            xmlcount = xmlcount - Tag.length();
+                                        }
+                                    }
+                                }
+                            } else {
+                                Tagbuffer = new StringBuffer(stack.peek());
+                                Tagbuffer = Tagbuffer.insert(1, '/');
+                                xmlBuffer = xmlBuffer.insert(xmlBuffer.indexOf(Tag, xmlbuffercount - Tag.length()), Tagbuffer.toString() + "\n");
+                                errorIndex.add(xml.indexOf(Tag, xmlcount - Tag.length()));
+                                stack.pop();
+                                xmlbuffercount = xmlbuffercount + Tagbuffer.length() - Tag.length();
+                                xmlcount = xmlcount - Tag.length();
+                            }
+
+                            Tag = "";
 
 
                 } else { //if it is an openning tag push it in stack
