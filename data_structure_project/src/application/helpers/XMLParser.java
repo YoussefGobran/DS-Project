@@ -9,7 +9,9 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Stack;
 
 public class XMLParser {
   public XMLNode rootNode;
@@ -109,7 +111,7 @@ public class XMLParser {
   /**************************************************************************
    *                       Xml Correction/Detection                         *
    **************************************************************************/
-  public static List<Object> xmlCorrection(String xml) {
+  public static List<String> xmlCorrection(String xml) {
     //next line to remove any spaces at the beginning of the line in the xml
     xml = xml.replaceAll("(?m)^\\s+", "");
     StringBuffer xmlBuffer = new StringBuffer(xml);
@@ -121,7 +123,8 @@ public class XMLParser {
     int xmlbuffercount = 0;
     boolean endOfFile = false;
     List<Integer> errorIndex = new ArrayList<>();
-
+    List<String> result = new ArrayList<>();
+    try{
     while (xmlcount != chars.length) {
         if (chars[xmlcount] == '<') { //start by going through every tag in xml , tags start with '<' and ends with '>'
             Tag = "" + chars[xmlcount];
@@ -262,14 +265,32 @@ public class XMLParser {
             Tagbuffer = Tagbuffer.insert(1, '/');
             xmlBuffer = xmlBuffer.insert(xmlBuffer.length(), Tagbuffer.toString() + "\n");
             stack.pop();
+            errorIndex.add(xmlcount);
         }
     }
-    //creating a list of objects to return the xml containing error, the index of each error in that xml and last object is the corrected xml
-            List<Object> result =new ArrayList<>();
-            result.add(xml);
-            result.add(errorIndex);
+            //adding xml comments for the detected errors to show the place of the error detected
+            String errormsg = "<!-- Missing closing tag here -->\n";
+            StringBuffer xmlerrorbuffer = new StringBuffer(xml);
+            Collections.sort(errorIndex);
+            Collections.reverse(errorIndex);
+
+            for (int index : errorIndex) {
+                if (index >= xmlcount) {
+                    xmlerrorbuffer.insert(xmlerrorbuffer.length() - 1, "\n" + errormsg);
+                } else {
+                    xmlerrorbuffer.insert(index, errormsg);
+                }
+            }
+            //creating a list of Strings to return the xml containing errors with the detectet error msga and the corrected xml
+            result.add(xmlerrorbuffer.toString());
             result.add(xmlBuffer.toString());
-    return result;
+        } catch (Exception e) {
+            //for any corner cases that couldn't be handled for bad xml format this msg is shown
+            result.add ("Errors cannot be detected , try formatting your xml first");
+            result.add( "Errors cannot be corrected ,try formatting your xml first ");
+            return result;
+        }
+        return result;
 }
 
 //finction checks if this closing tag matches the current openning tag
