@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class XMLNode {
-  String tagName;
-  String innerText;
-  List<XMLNode> childrenNodes;
+  public String tagName;
+  public String innerText;
+  public List<XMLNode> childrenNodes;
 
   XMLNode() {
     tagName = null;
