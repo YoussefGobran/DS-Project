@@ -1,5 +1,5 @@
 package application;
-
+import application.helpers.XMLNode;
 public class JSON {
 	StringBuilder sb = new StringBuilder();
 	
@@ -9,9 +9,9 @@ public class JSON {
 		//start JSON BY ITS FIRST CURLY BRACKET
 		sb.append("{ \n");
 		//check if the children if they are array of objects or keys
-		for(int i = 1 ; i < node.childrenNodes.size() ; i++)
+		for(int i = 1; i < node.getChildrenNodes().size() ; i++)
 		{
-			if(node.childrenNodes.get(i).tagName != node.childrenNodes.get(i-1).tagName)
+			if(node.getChildrenNodes().get(i).getTagName() != node.getChildrenNodes().get(i - 1).getTagName())
 			{
 				obJSON_diff_flag=true;
 			}
@@ -20,19 +20,19 @@ public class JSON {
 		//if the children are different
 		if(obJSON_diff_flag==true)
 		{
-			for(int i = 1 ; i < node.childrenNodes.size() ; i++)
+			for(int i = 1; i < node.getChildrenNodes().size() ; i++)
 			{
 				sb.append("\"");
-				sb.append(node.childrenNodes.get(i).tagName);
+				sb.append(node.getChildrenNodes().get(i).getTagName());
 				sb.append("\" :");
 				//Check if still have children
-				if(node.childrenNodes.get(i).childrenNodes != null)
-				sb.append(createJson(node.childrenNodes.get(i)));
+				if(node.getChildrenNodes().get(i).getChildrenNodes() != null)
+				sb.append(createJson(node.getChildrenNodes().get(i)));
 				//if not >>> print inner text
 				else
 				{
 					sb.append("\"");
-					sb.append(node.childrenNodes.get(i).innerText);
+					sb.append(node.getChildrenNodes().get(i).getInnerText());
 					sb.append("\" \n");	
 				}
 			}
@@ -40,11 +40,11 @@ public class JSON {
 		else // else children are array of the object
 		{
 			sb.append("\"");
-			sb.append(node.tagName);
+			sb.append(node.getTagName());
 			sb.append("\" :[ \n");
-			for(int i = 1 ; i < node.childrenNodes.size() ; i++)
+			for(int i = 1; i < node.getChildrenNodes().size() ; i++)
 			{
-				sb.append(createJson(node.childrenNodes.get(i)));
+				sb.append(createJson(node.getChildrenNodes().get(i)));
 			}
 			sb.append(" ]\n");
 		}

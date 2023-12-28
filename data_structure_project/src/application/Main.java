@@ -19,11 +19,16 @@ public class Main extends Application {
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			XMLParser xmlParser=new XMLParser();
-			
+
 			String fileContent=xmlParser.readFileContent("data_structure_project\\src\\application\\helpers\\assets\\sample.xml");
 
 			xmlParser.parseXMLFile(fileContent);
 			System.out.println(xmlParser.rootNode);
+
+			JSON jsonConverter = new JSON();
+			String jsonString = jsonConverter.createJson(xmlParser.rootNode);
+			System.out.println(jsonString);
+
 			// String res=xmlParser.cleanFileContent(fileContent);
 			// xmlParser.saveFile(res, "data_structure_project\\src\\application\\helpers\\assets\\sample_after_compression.xml");
 			// System.out.println(res);
@@ -31,7 +36,7 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static void main(String[] args) {
 		launch(args);
 	}

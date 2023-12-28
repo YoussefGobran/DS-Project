@@ -31,6 +31,7 @@ public class Controller {
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
+
 	}
 	// Formatting XML
 
@@ -42,6 +43,16 @@ public class Controller {
 
 		String formattedXml = formatXml(parser.rootNode);
 		openFormattedXmlWindow(formattedXml);
+	}
+	@FXML
+	public void showGraph(ActionEvent actionEvent) {
+		String xmlContent = direction.getText();
+		parser = new XMLParser();
+		parser.parseXMLFile(xmlContent);
+
+		// Create and show graph
+		GraphVisualization graphVisualization = new GraphVisualization(parser.rootNode);
+		graphVisualization.showGraph();
 	}
 
 	private String formatXml(XMLNode node) {
@@ -90,5 +101,4 @@ public class Controller {
 		stage.setTitle("Formatted XML");
 		stage.show();
 	}
-
 }
