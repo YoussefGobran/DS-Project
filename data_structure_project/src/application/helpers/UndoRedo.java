@@ -30,5 +30,17 @@ public class UndoRedo {
         }
         return state;
     }
+	
+	//redo previously undoed operations 
+    //this function also takes the current state as input and returns the state which we undoed from
+    //if no undos is done before the redo same state is returned 
+    public String redo(String state){
+        if(!redoStack.isEmpty()){
+            String temp=redoStack.pop();
+            undoStack.push(state);
+            return temp;
+        }
+        return state;
+    }
 
 }
