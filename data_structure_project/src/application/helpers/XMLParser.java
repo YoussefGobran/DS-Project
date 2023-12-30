@@ -114,6 +114,7 @@ public class XMLParser {
 	public List<String> xmlCorrection(String xml) {
 		//index 0 is detected and index 1 is corrected
 		//next line to remove any spaces at the beginning of the line in the xml
+		xml=xml.replaceAll("\r\n|\r", "\n");
 		xml = xml.replaceAll("(?m)^\\s+", "");
 		StringBuffer xmlBuffer = new StringBuffer(xml);
 		Stack<String> stack = new Stack<String>(); //stack to hold openning tags
