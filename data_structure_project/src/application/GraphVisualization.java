@@ -7,11 +7,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Line;
+import java.util.List;
+
 public class GraphVisualization {
     private XMLNode rootNode;
 
@@ -21,8 +20,6 @@ public class GraphVisualization {
 
     public void showGraph() {
         Pane pane = new Pane();
-
-        Map<String, Circle> userCircles = new HashMap<>();
 
         List<XMLNode> users = rootNode.getChildrenNodes();
         int numUsers = users.size();
@@ -47,8 +44,8 @@ public class GraphVisualization {
             userIdLabel.setLayoutY(userY - 12); // Adjust label position
 
             pane.getChildren().addAll(userCircle, userIdLabel);
-            userCircles.put(userId, userCircle);
         }
+
         // Draw lines (arrows) from users to followers
         for (XMLNode user : users) {
             String userId = user.getChildrenNodes().get(0).getInnerText();
@@ -57,12 +54,12 @@ public class GraphVisualization {
             for (XMLNode follower : followers) {
                 String followerId = follower.getChildrenNodes().get(0).getInnerText(); // Assuming the first child is the follower ID
 
-                Circle userCircle = userCircles.get(userId);
-                Circle followerCircle = userCircles.get(followerId);
+                Circle userCircle = findUserCircle(pane, users, userId);
+                Circle followerCircle = findUserCircle(pane, users, followerId);
 
                 if (userCircle != null && followerCircle != null) {
                     // Draw line only if the follower ID matches an existing user ID
-                    if (userCircles.containsKey(followerId)) {
+                    if (findUserCircle(pane, users, followerId) != null) {
                         ArrowLine arrowLine = new ArrowLine(pane, followerCircle.getCenterX(), followerCircle.getCenterY(),
                                 userCircle.getCenterX(), userCircle.getCenterY());
                         pane.getChildren().add(arrowLine);
@@ -71,19 +68,31 @@ public class GraphVisualization {
             }
         }
 
-
         Scene scene = new Scene(pane, 600, 400);
         Stage stage = new Stage();
         stage.setScene(scene);
         stage.setTitle("Graph Visualization");
         stage.show();
     }
+
+    private Circle findUserCircle(Pane pane, List<XMLNode> users, String userId) {
+        for (XMLNode user : users) {
+            String currentUserId = user.getChildrenNodes().get(0).getInnerText();
+            if (userId.equals(currentUserId)) {
+                double userX = ((Circle) pane.getChildren().get(users.indexOf(user) * 2)).getCenterX();
+                double userY = ((Circle) pane.getChildren().get(users.indexOf(user) * 2)).getCenterY();
+                return new Circle(userX, userY, 20);
+            }
+        }
+        return null;
+    }
+
     private static class ArrowLine extends Line {
 
         private static final double ARROW_SIZE = 10;
         private final Pane pane;
 
-        public ArrowLine(Pane pane,double startX, double startY, double endX, double endY) {
+        public ArrowLine(Pane pane, double startX, double startY, double endX, double endY) {
             super(startX, startY, endX, endY);
             this.pane = pane;
             drawArrowHead();
@@ -92,8 +101,8 @@ public class GraphVisualization {
         private void drawArrowHead() {
             double angle = Math.atan2(getEndY() - getStartY(), getEndX() - getStartX());
 
-            double arrowEndX = getEndX() -  2*ARROW_SIZE * Math.cos(angle);
-            double arrowEndY = getEndY() -  2*ARROW_SIZE * Math.sin(angle);
+            double arrowEndX = getStartX() + ARROW_SIZE * Math.cos(angle);
+            double arrowEndY = getStartY() + ARROW_SIZE * Math.sin(angle);
 
             Polygon arrowhead = new Polygon(
                     arrowEndX, arrowEndY,
@@ -106,5 +115,7 @@ public class GraphVisualization {
             pane.getChildren().add(arrowhead);
         }
     }
+
+
 
 }
