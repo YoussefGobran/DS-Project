@@ -22,6 +22,9 @@ public class XMLNode {
   public List<XMLNode> getChildrenNodes() {
     return childrenNodes;
   }
+  public boolean haveChildren() {
+	  return childrenNodes.size()>0;
+  }
   @Override
   public String toString() {
     String res = "";

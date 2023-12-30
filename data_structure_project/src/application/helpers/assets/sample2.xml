@@ -1,0 +1,168 @@
+<users>
+    <user>
+        <id>1</id>
+        <name>Ahmed Ali</name>
+        <posts>
+            <post>
+                <body>
+                    post 1 body hello from one
+                </body>
+                <topics>
+                    <topic>
+                        economy
+                    </topic>
+                    <topic>
+                        finance
+                    </topic>
+                </topics>
+            </post>
+            <post>
+                <body>
+                    post 2 body hello from one
+                </body>
+                <topics>
+                    <topic>
+                        solar_energy
+                    </topic>
+                </topics>
+            </post>
+        </posts>
+        <followers>
+            <follower>
+                <id>2</id>
+            </follower>
+            <follower>
+                <id>3</id>
+            </follower>
+            <follower>
+                <id>4</id>
+            </follower>
+        </followers>
+    </user>
+    <user>
+        <id>2</id>
+        <name>Yasser Ahmed</name>
+        <posts>
+            <post>
+                <body>
+                    post 3 body hello from two
+                </body>
+                <topics>
+                    <topic>
+                        education
+                    </topic>
+                </topics>
+            </post>
+        </posts>
+        <followers>
+            <follower>
+                <id>6</id>
+            </follower>
+        </followers>
+    </user>
+    <user>
+        <id>3</id>
+        <name>Mohamed Sherif</name>
+        <posts>
+            <post>
+                <body>
+                    post 4 body hello from three
+                </body>
+                <topics>
+                    <topic>
+                        sports
+                    </topic>
+                </topics>
+            </post>
+        </posts>
+        <followers>
+            <follower>
+                <id>2</id>
+            </follower>
+            <follower>
+                <id>4</id>
+            </follower>
+            <follower>
+                <id>5</id>
+            </follower>
+        </followers>
+    </user>
+    <user>
+        <id>4</id>
+        <name>Andrew Ayman</name>
+        <posts>
+            <post>
+                <body>
+                    post 5 body hello from four
+                </body>
+                <topics>
+                    <topic>
+                        fantasy
+                    </topic>
+                </topics>
+            </post>
+        </posts>
+        <followers>
+            <follower>
+                <id>2</id>
+            </follower>
+            <follower>
+                <id>7</id>
+            </follower>
+        </followers>
+    </user>
+    <user>
+        <id>5</id>
+        <name>Yousef Sa3d</name>
+        <posts>
+            <post>
+                <body>
+                    post 6 body hello from five
+                </body>
+                <topics>
+                    <topic>
+                        fantasy
+                    </topic>
+                </topics>
+            </post>
+        </posts>
+        <followers>
+        </followers>
+    </user>
+    <user>
+        <id>6</id>
+        <name>Phelo Sameh</name>
+        <posts>
+            <post>
+                <body>
+                    post 7 body hello from six
+                </body>
+                <topics>
+                    <topic>
+                        fantasy
+                    </topic>
+                </topics>
+            </post>
+        </posts>
+        <followers>
+        </followers>
+    </user>
+    <user>
+        <id>7</id>
+        <name>Mark Ramy</name>
+        <posts>
+            <post>
+                <body>
+                    post 8 body hello from eight
+                </body>
+                <topics>
+                    <topic>
+                        sports
+                    </topic>
+                </topics>
+            </post>
+        </posts>
+        <followers>
+        </followers>
+    </user>
+</users>
