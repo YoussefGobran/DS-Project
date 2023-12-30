@@ -3,59 +3,76 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-import application.helpers.XMLNode;
-import application.helpers.XMLParser;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.scene.Node;
 
 public class Controller {
+	private Stage stage;
+	private Scene scene;
+	private Parent root;
+	
+	 
+	
 	@FXML
 	private TextArea direction;
-	@FXML
-	private Button choose;
-	public XMLParser parser;
+	//@FXML
+	//public XMLParser parser;
 	final FileChooser fc = new FileChooser();
+	File file;
 	public void multiFileChoosser(ActionEvent e){
 		fc.setTitle("My File Chooser");
 		fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files","*.xml"));
-		File file = fc.showOpenDialog(null);
+		file = fc.showOpenDialog(null);
 		if(file==null)return;
-		try {
+		direction.appendText(file.getAbsolutePath()+ "\n");
+		// zinab code 
+		/*try {
 			String fileContent = new String(Files.readAllBytes(file.toPath()));
 			direction.setText(fileContent);
 		} catch (IOException ex) {
 			ex.printStackTrace();
-		}
-
+		}*/
 	}
 	// Formatting XML
 
-	@FXML
-	private void handleProceedButtonClick(ActionEvent event) {
-		String xmlContent = direction.getText();
+	public void Proceed (ActionEvent event) throws IOException {
+		// zinab code
+		/*String xmlContent = direction.getText();
 		parser = new XMLParser();
 		parser.parseXMLFile(xmlContent);
 
 		String formattedXml = formatXml(parser.rootNode);
 		openFormattedXmlWindow(formattedXml);
+		*/
+		
+		
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("Level1.fxml"));
+		root = loader.load();
+		
+		Controller1 controller1 = loader.getController();
+		
+		controller1.displayBeforeChange(file);
+		
+		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+		scene = new Scene(root);
+		stage.setScene(scene);
+		stage.show();
+		
+		//XMLParser parser = new XMLParser();
+		//change.appendText(parser.readFileContent(direction.getText()));
 	}
-	@FXML
-	public void showGraph(ActionEvent actionEvent) {
-		String xmlContent = direction.getText();
-		parser = new XMLParser();
-		parser.parseXMLFile(xmlContent);
-
-		// Create and show graph
-		GraphVisualization graphVisualization = new GraphVisualization(parser.rootNode);
-		graphVisualization.showGraph();
-	}
-
-	private String formatXml(XMLNode node) {
+	
+	
+	
+	// zinab code
+/*  private String formatXml(XMLNode node) {
 		StringBuilder formattedXml = new StringBuilder();
 		formatNode(node, formattedXml, 0);
 		return formattedXml.toString();
@@ -101,4 +118,5 @@ public class Controller {
 		stage.setTitle("Formatted XML");
 		stage.show();
 	}
+*/
 }
