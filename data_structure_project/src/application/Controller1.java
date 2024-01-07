@@ -30,14 +30,19 @@ public class Controller1 {
 	public XMLParser parser;
 	public UndoRedo undoRedo;
 	
-	public void displayBeforeChange (File passedFile) throws IOException {
+	public void displayBeforeChange (String path) throws IOException {
 		
 		parser=new XMLParser();
 		undoRedo=new UndoRedo();
-		String fileContent=parser.readFileContent(passedFile.toPath().toString());
+		String fileContent=parser.readFileContent(path);
 		String fileContentAfterDetection=parser.xmlCorrection(fileContent).get(1);
 //		System.out.println(fileContentAfterDetection);
-		parser.parseXMLFile(fileContent);
+		try{
+			
+			parser.parseXMLFile(fileContentAfterDetection);
+		}catch(Exception e){
+			parser.parseXMLFile(fileContent);
+		}
 		
 		preChange.setText(fileContent);
 	}
@@ -112,7 +117,9 @@ public class Controller1 {
 	
 	public void showGraph(ActionEvent actionEvent) throws IOException {
 		// Create and show graph
-		GraphVisualization graphVisualization = new GraphVisualization(parser.rootNode);
+		parser.parseXMLToUsers();
+		parser.buildAdjanceyListUsers();
+		GraphVisualization graphVisualization = new GraphVisualization(parser.users,parser.adjanceyListUsers);
 		graphVisualization.showGraph();
 	}
 

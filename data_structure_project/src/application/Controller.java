@@ -58,7 +58,7 @@ public class Controller {
 		
 		Controller1 controller1 = loader.getController();
 		
-		controller1.displayBeforeChange(file);
+		controller1.displayBeforeChange(direction.getText());
 		
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		scene = new Scene(root);

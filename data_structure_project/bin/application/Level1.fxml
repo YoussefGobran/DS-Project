@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="624.0" prefWidth="823.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller1">
+   <children>
+      <TextArea fx:id="preChange" layoutX="37.0" layoutY="34.0" prefHeight="384.0" prefWidth="358.0" />
+      <TextArea fx:id="afterChange" layoutX="427.0" layoutY="34.0" prefHeight="384.0" prefWidth="357.0" />
+      <Button layoutX="37.0" layoutY="472.0" mnemonicParsing="false" onAction="#checkErrors" prefHeight="34.0" prefWidth="88.0" text="Check Errors" />
+      <Button layoutX="173.0" layoutY="472.0" mnemonicParsing="false" onAction="#fixErrors" prefHeight="34.0" prefWidth="73.0" text="Fix Errors" />
+      <Button layoutX="703.0" layoutY="472.0" mnemonicParsing="false" onAction="#showGraph" prefHeight="34.0" prefWidth="81.0" text="show graph" />
+      <Button layoutX="299.0" layoutY="472.0" mnemonicParsing="false" onAction="#XMLFormat" prefHeight="34.0" prefWidth="88.0" text="XML Format" />
+      <Button layoutX="433.0" layoutY="472.0" mnemonicParsing="false" onAction="#convertToJason" prefHeight="34.0" prefWidth="110.0" text="Convert to Jason" />
+      <Button layoutX="577.0" layoutY="472.0" mnemonicParsing="false" onAction="#compress" prefHeight="34.0" prefWidth="88.0" text="Compress" />
+      <Button layoutX="649.0" layoutY="547.0" mnemonicParsing="false" onAction="#apply" prefHeight="34.0" prefWidth="67.0" text="Apply" />
+      <Button layoutX="728.0" layoutY="548.0" mnemonicParsing="false" onAction="#save" prefHeight="34.0" prefWidth="67.0" text="Save" />
+      <Button layoutX="26.0" layoutY="548.0" mnemonicParsing="false" onAction="#undo" prefHeight="34.0" prefWidth="67.0" text="Undo" />
+      <Button layoutX="106.0" layoutY="548.0" mnemonicParsing="false" onAction="#redo" prefHeight="34.0" prefWidth="67.0" text="Redo" />
+      <Button layoutX="356.0" layoutY="548.0" mnemonicParsing="false" onAction="#networkAnalysis" prefHeight="34.0" prefWidth="110.0" text="Network Analysis" />
+   </children>
+</AnchorPane>
