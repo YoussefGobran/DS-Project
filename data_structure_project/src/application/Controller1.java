@@ -35,10 +35,9 @@ public class Controller1 {
 		parser=new XMLParser();
 		undoRedo=new UndoRedo();
 		String fileContent=parser.readFileContent(path);
-		String fileContentAfterDetection=parser.xmlCorrection(fileContent).get(1);
-//		System.out.println(fileContentAfterDetection);
+		//		System.out.println(fileContentAfterDetection);
 		try{
-			
+			String fileContentAfterDetection=parser.xmlCorrection(fileContent).get(1);
 			parser.parseXMLFile(fileContentAfterDetection);
 		}catch(Exception e){
 			parser.parseXMLFile(fileContent);
